@@ -119,7 +119,7 @@ var removeCorrectWrong = function() {
 
     setTimeout(() => {
         rightWrongAnswerInput.remove();
-    }, 2000);
+    }, 3000);
 };
 
 var removeQuestionAnswer = function() {
