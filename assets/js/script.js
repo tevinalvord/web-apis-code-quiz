@@ -167,11 +167,11 @@ var quiz = function(event) {
         } 
         else if (count === 5) {
             finalScore();
-            window.clearInterval(timerInterval);
+            clearInterval(timerInterval);
         }
-    checkAnswer();
-    removeQuestionAnswer();
-    removeCorrectWrong();
+        checkAnswer();
+        removeQuestionAnswer();
+        removeCorrectWrong();
     }
 };
 
