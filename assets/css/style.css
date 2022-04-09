@@ -53,6 +53,8 @@ main {
 .quiz-para {
     font-size: 1.6rem;
     text-align: center;
+    margin: 14px 0px;
+    line-height: 1.2;
 }
 
 .quiz-challenge {
@@ -70,7 +72,7 @@ main {
     max-width: 720px;
 }
 
-.quiz-wrapper p, .section-wrapper p{
+.quiz-wrapper p {
     margin: 20px 0px;
     line-height: 1.2;
 }
@@ -129,12 +131,57 @@ main {
     display: flex;
     flex: 1;
     margin: 20px 20px;
+    padding-top: 10px;
 }
 
 .right-wrong-answer-para {
     font-size: 2.4rem;
     font-style: italic;
     color: grey;
+}
+
+.final-score-wrapper {
+    line-height: 1.5;
+    margin: 0px 20px;
+}
+
+.final-score-para {
+    font-size: 2.0rem;
+    font-weight: 500;
+    line-height: 2.0;
+    display: inline-block;
+}
+
+.final-score-input {
+    display: flex;
+    align-items: center;
+}
+
+.initial-input {
+    margin: 6px;
+    padding: 6px 60px 6px 8px;
+    outline: none;
+    font-weight: 500;
+    font-size: 1.6rem;
+}
+
+.initial-input:hover, .initial-input:focus {
+    border-color: var(--secondary);
+}
+
+.score-btn {
+    color:white;
+    background: var(--primary);
+    font-size: 2.0em;
+    padding: 4px 16px;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.score-btn:hover {
+    background: var(--secondary);
 }
 
 @media screen and (max-width: 450px) {

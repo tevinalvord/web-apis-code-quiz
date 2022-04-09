@@ -53,9 +53,6 @@ var quizInfo = [
         answer4: "4. console.log",
         correctAnswer: "4. console.log",
     },
-    {
-
-    },
 ];
 
 var timer = function() {
@@ -87,6 +84,25 @@ var addQuizInfo = function() {
     questionAnswerDiv.appendChild(answerDiv);
     // add 1 to count
     count++;
+};
+
+var finalScore = function() {
+    // create new div for finalScore info
+    var finalScoreDiv = document.createElement("div");
+    finalScoreDiv.className = "final-score-wrapper";
+    sectionEl.appendChild(finalScoreDiv);
+    // create new div for finalscore text
+    var finalScoreTextDiv = document.createElement("div");
+    finalScoreTextDiv.innerHTML = "<h1 class='question-title'>All done!</h1><p class='final-score-para'>Your final score is " + time + ".</p>"
+    finalScoreTextDiv.className = "final-text-wrapper";
+    finalScoreDiv.appendChild(finalScoreTextDiv);
+    // create new div for finalscore input field / button
+    var finalScoreInputDiv = document.createElement("div");
+    finalScoreInputDiv.innerHTML = "<p class='final-score-para'>Enter initials:</p><input type='text' name='score-initials' class='initial-input' placeholder='TA'><button class='score-btn' id='score-btn'>Submit</button>";
+    finalScoreInputDiv.className = "final-score-input";
+    finalScoreDiv.appendChild(finalScoreInputDiv);
+    // create input field for finalscoreinputdiv
+    // var finalScoreInput = document.createElement()
 };
 
 var checkAnswer = function() {
@@ -145,10 +161,17 @@ var quiz = function(event) {
     } 
     // add additional quiz questions after first is answered and remove previous question/answers
     else if (targetEl.matches("#answer-btn")) {
-        addQuizInfo();
-        checkAnswer();
-        removeQuestionAnswer();
-        removeCorrectWrong();
+        if (count < 5) {
+            addQuizInfo();
+            checkAnswer();
+        } 
+        else if (count === 5) {
+            finalScore();
+            clearInterval(timer);
+        }
+    checkAnswer();
+    removeQuestionAnswer();
+    removeCorrectWrong();
     }
 };
 
