@@ -62,16 +62,17 @@ main {
     align-items: center;
 }
 
-.quiz-wrapper {
+.quiz-wrapper, .section-wrapper {
     display: flex;
-    align-items: flex-start;
+    align-items: normal;
     flex-direction: column;
     margin: 0px 20px;
     max-width: 720px;
 }
 
-.quiz-wrapper p {
+.quiz-wrapper p, .section-wrapper p{
     margin: 20px 0px;
+    line-height: 1.2;
 }
 
 .btn {
@@ -108,15 +109,30 @@ main {
     background: var(--primary);
     font-size: 1.8rem;
     padding: 10px 20px;
-    margin: 10px auto;
+    margin: 10px 0px;
     width: 230px;
     border-radius: 6px;
     outline: none;
     border: none;
     cursor: pointer;
-    text-align: left;
+    display: flex;
+    align-items: flex-start;
 }
 
 .answer-btn:hover {
     background: var(--secondary);
+}
+
+.right-wrong-answer-div {
+    border-top: 1px solid grey;
+    max-width: 720px;
+    display: flex;
+    flex: 1;
+    margin: 20px 20px;
+}
+
+.right-wrong-answer-para {
+    font-size: 2.4rem;
+    font-style: italic;
+    color: grey;
 }

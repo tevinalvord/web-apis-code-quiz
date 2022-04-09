@@ -1,7 +1,15 @@
+// create rightWrongAnswerDiv give it a class
+var rightWrongAnswerDiv = document.createElement("div");
+rightWrongAnswerDiv.className = "right-wrong-answer-div";
+// create rightWrongAnswerPara give it a class
+var rightWrongAnswerPara = document.createElement("p");
+rightWrongAnswerPara.className = "right-wrong-answer-para";
+
 var startQuizButton = document.querySelector("#start-quiz");
 var quizChallenge = document.querySelector("#quiz-challenge");
+var sectionEl = document.querySelector("#section-wrapper");
 var quizInfoEl = document.querySelector("#quiz-wrapper");
-var pageContentEl = document.querySelector("#page-content")
+var pageContentEl = document.querySelector("#page-content");
 var time = 75;
 var count = 0;
 var quizInfo = [
@@ -11,7 +19,7 @@ var quizInfo = [
         answer2: "2. booleans",
         answer3: "3. alerts",
         answer4: "4. numbers",
-        correctAnswer: "alerts",
+        correctAnswer: "3. alerts",
     },
     {
         question: "The condition in an if / else statement is enclosed with ________.",
@@ -19,7 +27,7 @@ var quizInfo = [
         answer2: "2. curly brackets",
         answer3: "3. parenthesis",
         answer4: "4. square brackets",
-        correctAnswer: "parenthesis",
+        correctAnswer: "3. parenthesis",
     },
     {
         question: "Arrays in JavaScript can be used to store ________.",
@@ -27,7 +35,7 @@ var quizInfo = [
         answer2: "2. other arrays",
         answer3: "3. booleans",
         answer4: "4. all of the above",
-        correctAnswer: "all of the above",
+        correctAnswer: "4. all of the above",
     },
     {
         question: "String values must be enclosed within ______ when being assigned to variables.",
@@ -35,7 +43,7 @@ var quizInfo = [
         answer2: "2. curely brackets",
         answer3: "3. quotes",
         answer4: "4. parenthesis",
-        correctAnswer: "quotes",
+        correctAnswer: "3. quotes",
     },
     {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
@@ -43,7 +51,10 @@ var quizInfo = [
         answer2: "2. terminal/bash",
         answer3: "3. for loops",
         answer4: "4. console.log",
-        correctAnswer: "console.log",
+        correctAnswer: "4. console.log",
+    },
+    {
+
     },
 ];
 
@@ -63,7 +74,7 @@ var addQuizInfo = function() {
     var questionAnswerDiv = document.createElement("div");
     questionAnswerDiv.className = "quiz-wrapper";
     questionAnswerDiv.setAttribute("data-count-id", count);
-    quizInfoEl.appendChild(questionAnswerDiv);
+    sectionEl.appendChild(questionAnswerDiv);
     // create new div with quiz question and append it to quiz wrapper section
     var questionDiv = document.createElement("div");
     questionDiv.innerHTML = "<h1 class='question-title'>" + quizInfo[count].question + "</h1>";
@@ -74,13 +85,47 @@ var addQuizInfo = function() {
     answerDiv.innerHTML = "<button class='answer-btn' id='answer-btn'>" + quizInfo[count].answer1 + "</button><button class='answer-btn' id='answer-btn'>" + quizInfo[count].answer2 + "</button><button class='answer-btn' id='answer-btn'>" + quizInfo[count].answer3 + "</button><button class='answer-btn' id='answer-btn'>" + quizInfo[count].answer4 + "</button>";
     answerDiv.className = "answer-div";
     questionAnswerDiv.appendChild(answerDiv);
+    // add 1 to count
     count++;
 };
 
-// var removeQuestion = function() {
-//     var questionAnswerInput = document.querySelector("div[data-count-id='0']");
-//     questionAnswerInput.remove();
-// }
+var checkAnswer = function() {
+    // append rightWrongAnswerDiv to section element
+    sectionEl.append(rightWrongAnswerDiv);
+    // append rightWrongAnswer Para to rightWrongAnswerDiv
+    rightWrongAnswerDiv.append(rightWrongAnswerPara);
+
+    var selectedAnswer = event.target.textContent;
+
+    if (selectedAnswer === quizInfo[(count - 2)].correctAnswer) {
+        rightAnswer(rightWrongAnswerPara);
+    } 
+    else if (selectedAnswer !== quizInfo[(count - 2)].correctAnswer) {
+        time -= 10;
+        wrongAnswer(rightWrongAnswerPara);
+    }
+};
+
+var rightAnswer = function(rightWrongAnswerPara) {
+    rightWrongAnswerPara.textContent = "Correct!";
+};
+
+var wrongAnswer = function(rightWrongAnswerPara) {
+    rightWrongAnswerPara.textContent = "Wrong. :(";
+};
+
+var removeCorrectWrong = function() {
+    var rightWrongAnswerInput = document.querySelector("div[class='right-wrong-answer-div']")
+
+    setTimeout(() => {
+        rightWrongAnswerInput.remove();
+    }, 2000);
+};
+
+var removeQuestionAnswer = function() {
+    var questionAnswerInput = document.querySelector("div[class='quiz-wrapper']");
+    questionAnswerInput.remove();
+};
 
  var startQuiz = function() {
     // start timer countdown from 75
@@ -98,9 +143,12 @@ var quiz = function(event) {
     if (targetEl.matches("#start-quiz")) {
         startQuiz();
     } 
-    // add additional quiz questions after first is answered
+    // add additional quiz questions after first is answered and remove previous question/answers
     else if (targetEl.matches("#answer-btn")) {
         addQuizInfo();
+        checkAnswer();
+        removeQuestionAnswer();
+        removeCorrectWrong();
     }
 };
 
