@@ -12,6 +12,7 @@ var quizInfoEl = document.querySelector("#quiz-wrapper");
 var pageContentEl = document.querySelector("#page-content");
 var time = 75;
 var count = 0;
+var timerInterval = null;
 var quizInfo = [
     {
         question: "Commonly used data types DO Not include:",
@@ -56,14 +57,16 @@ var quizInfo = [
 ];
 
 var timer = function() {
-    // target time element in HTML and replace it with "Time: 75" counting down by 1 every second
-    document.getElementById("time").textContent = "Time: " + time;
-    time -= 1;
-
-    if (time === -1) {
-        alert("Time's up! The quiz is now over.");
-        clearInterval(countDown);
-    }
+    timerInterval = setInterval(function() {
+        time--;
+        if (time >= 0) {
+            document.getElementById("time").textContent = "Time: " + time;
+        }
+        if (time === 0) {
+            alert("Time's up! The quiz is now over.");
+            clearInterval(time);
+        }
+    }, 1000)
 };
 
 var addQuizInfo = function() {
@@ -101,8 +104,6 @@ var finalScore = function() {
     finalScoreInputDiv.innerHTML = "<p class='final-score-para'>Enter initials:</p><input type='text' name='score-initials' class='initial-input' placeholder='TA'><button class='score-btn' id='score-btn'>Submit</button>";
     finalScoreInputDiv.className = "final-score-input";
     finalScoreDiv.appendChild(finalScoreInputDiv);
-    // create input field for finalscoreinputdiv
-    // var finalScoreInput = document.createElement()
 };
 
 var checkAnswer = function() {
@@ -145,7 +146,7 @@ var removeQuestionAnswer = function() {
 
  var startQuiz = function() {
     // start timer countdown from 75
-    window.countDown = setInterval(timer, 1000);
+    timer();
     // remove div containing default html
     quizChallenge.remove();
     // add first quiz question
@@ -163,11 +164,10 @@ var quiz = function(event) {
     else if (targetEl.matches("#answer-btn")) {
         if (count < 5) {
             addQuizInfo();
-            checkAnswer();
         } 
         else if (count === 5) {
             finalScore();
-            clearInterval(timer);
+            window.clearInterval(timerInterval);
         }
     checkAnswer();
     removeQuestionAnswer();
