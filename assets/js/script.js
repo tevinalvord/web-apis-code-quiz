@@ -10,9 +10,11 @@ var quizChallenge = document.querySelector("#quiz-challenge");
 var sectionEl = document.querySelector("#section-wrapper");
 var quizInfoEl = document.querySelector("#quiz-wrapper");
 var pageContentEl = document.querySelector("#page-content");
+var headerContentEl = document.querySelector("#header-div")
 var time = 75;
 var count = 0;
 var timerInterval = null;
+var highScores = [];
 var quizInfo = [
     {
         question: "Commonly used data types DO Not include:",
@@ -93,6 +95,7 @@ var finalScore = function() {
     // create new div for finalScore info
     var finalScoreDiv = document.createElement("div");
     finalScoreDiv.className = "final-score-wrapper";
+    finalScoreDiv.setAttribute("id", "final-score-wrapper");
     sectionEl.appendChild(finalScoreDiv);
     // create new div for finalscore text
     var finalScoreTextDiv = document.createElement("div");
@@ -144,14 +147,51 @@ var removeQuestionAnswer = function() {
     questionAnswerInput.remove();
 };
 
- var startQuiz = function() {
+var saveScore = function() {
+    var currentScore = time;
+    var initialInput = document.querySelector("input[name='score-initials']").value;
+    var scoreDataObj = {
+        name: initialInput,
+        score: currentScore,
+    };
+    highScores.push(scoreDataObj);
+};
+
+var highScore = function() {
+    // create highscorediv to hold all high score elements
+    var highScoreDiv = document.createElement("div");
+    highScoreDiv.className = "high-score-wrapper"
+    highScoreDiv.setAttribute("id", "high-score-wrapper")
+    sectionEl.appendChild(highScoreDiv);
+    // create highscore h1 element
+    var highScoreH1 = document.createElement("h1");
+    highScoreH1.className = "quiz-title"
+    highScoreH1.textContent = "High scores"
+    highScoreDiv.appendChild(highScoreH1);
+    // create order list element
+    var highScoreOlEl = document.createElement("ol");
+    highScoreOlEl.className = "high-scores-ol";
+    highScoreDiv.appendChild(highScoreOlEl);
+    // create div for "go back" and "clear high scores" buttons
+    var highScoreBtnDiv = document.createElement("div");
+    highScoreBtnDiv.className = "high-score-btn-div";
+    highScoreBtnDiv.innerHTML = "<button class='score-btn' id='go-back-btn'>Go back</button><button class='clear-score-btn' id='clear-high-scores-btn'>Clear high scores</button>"
+    highScoreDiv.appendChild(highScoreBtnDiv);
+    // add li of high scores to ol
+    var highScoreLiEl = document.createElement("li");
+    highScoreLiEl.className = "high-scores-li";
+    highScoreLiEl.innerText = "1. " + highScores[0].name + " - " + highScores[0].score;
+    highScoreOlEl.appendChild(highScoreLiEl);
+};
+
+var startQuiz = function() {
     // start timer countdown from 75
     timer();
     // remove div containing default html
     quizChallenge.remove();
     // add first quiz question
     addQuizInfo();
- };
+};
 
 var quiz = function(event) {
     // get target element from event
@@ -173,6 +213,39 @@ var quiz = function(event) {
         removeQuestionAnswer();
         removeCorrectWrong();
     }
-};
+    // clear finalscore and load high scores
+    else if (targetEl.matches("#score-btn")) {
+        // make sure input isnt empty
+        var initialInput = document.querySelector("input[name='score-initials']").value;
+        if (!initialInput) {
+            alert("You need to enter your initials")
+            return false;
+        }
+        // save score with initial in input
+        saveScore();
+        // remove content from the page after score submission
+        var finalScoreEl = document.querySelector("#final-score-wrapper");
+        var headerEl = document.querySelector('#header-div')
+        finalScoreEl.remove();
+        headerEl.remove();
+        // show high scores
+        highScore();
+    }
+    // clear highScores and reload page
+    else if (targetEl.matches("#go-back-btn")) {
+        location.reload();
+    }
+    // clear high scores from highScores pages
+    else if (targetEl.matches("#clear-high-scores-btn")) {
+    
+    }
+    else if (targetEl.matches("#high-scores")) {
+        var headerEl = document.querySelector('#header-div')
+        quizChallenge.remove();
+        headerEl.remove();
+        highScore();
+    }
+};  
 
 pageContentEl.addEventListener("click", quiz);
+headerContentEl.addEventListener("click", quiz);

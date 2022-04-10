@@ -169,7 +169,7 @@ main {
     border-color: var(--secondary);
 }
 
-.score-btn {
+.score-btn, .clear-score-btn {
     color:white;
     background: var(--primary);
     font-size: 2.0em;
@@ -180,8 +180,31 @@ main {
     cursor: pointer;
 }
 
-.score-btn:hover {
+.clear-score-btn {
+    margin-left: 8px;
+}
+
+.score-btn:hover, .clear-score-btn:hover {
     background: var(--secondary);
+}
+
+.high-score-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.high-scores-ol {
+    background: #d9d3e9;
+    margin: 16px auto;
+    height: 30px;
+    min-width: 400px;
+    list-style: none;
+}
+
+.high-scores-li {
+    font-size: 1.6rem;
+    padding: 5px;
 }
 
 @media screen and (max-width: 450px) {
