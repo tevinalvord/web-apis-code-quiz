@@ -68,6 +68,7 @@ var timer = function() {
         if (time === 0) {
             alert("Time's up! The quiz is now over.");
             clearInterval(time);
+            location.reload();
         }
     }, 1000)
 };
