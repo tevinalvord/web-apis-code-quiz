@@ -165,6 +165,13 @@ var saveScore = function() {
 };
 
 var highScore = function() {
+    // sort high scores by highest number
+    highScores.sort((a, b) => {
+        if (a.score < b.score) {
+            return 1
+        } else {}
+            return -1
+    })
     // create highscorediv to hold all high score elements
     var highScoreDiv = document.createElement("div");
     highScoreDiv.className = "high-score-wrapper"
@@ -247,7 +254,7 @@ var quiz = function(event) {
     }
     // clear high scores from highScores pages
     else if (targetEl.matches("#clear-high-scores-btn")) {
-        var clearHighScore = confirm("Are you sure you'd like to clear all high scores?")
+        var clearHighScore = confirm("Are you sure you'd like to clear high scores?")
         if (clearHighScore) {
             highScores = [];
             localStorage.setItem("highScores", JSON.stringify(highScores));
@@ -273,6 +280,12 @@ var loadScore = function() {
     }
 
     highScores = JSON.parse(highScores);
+    highScores.sort((a, b) => {
+        if (a.score < b.score) {
+            return 1
+        } else {}
+          return -1
+    })
 };
 
 pageContentEl.addEventListener("click", quiz);
