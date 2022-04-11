@@ -13,6 +13,7 @@ var pageContentEl = document.querySelector("#page-content");
 var headerContentEl = document.querySelector("#header-div")
 var time = 75;
 var count = 0;
+var highScoreCounter = 0;
 var timerInterval = null;
 var highScores = [];
 var quizInfo = [
@@ -134,12 +135,16 @@ var wrongAnswer = function(rightWrongAnswerPara) {
     rightWrongAnswerPara.textContent = "Wrong. :(";
 };
 
+// var removeCorrectWrong = function() {
+//     var rightWrongAnswerInput = document.querySelector("div[class='right-wrong-answer-div']")
+//     setTimeout(() => {
+//         rightWrongAnswerInput.remove();
+//     }, 10000);
+// };
+
 var removeCorrectWrong = function() {
     var rightWrongAnswerInput = document.querySelector("div[class='right-wrong-answer-div']")
-
-    setTimeout(() => {
-        rightWrongAnswerInput.remove();
-    }, 3000);
+    rightWrongAnswerInput.remove();
 };
 
 var removeQuestionAnswer = function() {
@@ -155,6 +160,8 @@ var saveScore = function() {
         score: currentScore,
     };
     highScores.push(scoreDataObj);
+
+    localStorage.setItem("highScores", JSON.stringify(highScores));
 };
 
 var highScore = function() {
@@ -178,10 +185,12 @@ var highScore = function() {
     highScoreBtnDiv.innerHTML = "<button class='score-btn' id='go-back-btn'>Go back</button><button class='clear-score-btn' id='clear-high-scores-btn'>Clear high scores</button>"
     highScoreDiv.appendChild(highScoreBtnDiv);
     // add li of high scores to ol
-    var highScoreLiEl = document.createElement("li");
-    highScoreLiEl.className = "high-scores-li";
-    highScoreLiEl.innerText = "1. " + highScores[0].name + " - " + highScores[0].score;
-    highScoreOlEl.appendChild(highScoreLiEl);
+    for (i = 0; i < highScores.length; i++) {
+        var highScoreLiEl = document.createElement("li");
+        highScoreLiEl.className = "high-scores-li";
+        highScoreLiEl.innerText = [(i + 1)]+ ". " + highScores[i].name + " - " + highScores[i].score;
+        highScoreOlEl.appendChild(highScoreLiEl);
+    }
 };
 
 var startQuiz = function() {
@@ -211,7 +220,7 @@ var quiz = function(event) {
         }
         checkAnswer();
         removeQuestionAnswer();
-        removeCorrectWrong();
+        // removeCorrectWrong();
     }
     // clear finalscore and load high scores
     else if (targetEl.matches("#score-btn")) {
@@ -221,7 +230,7 @@ var quiz = function(event) {
             alert("You need to enter your initials")
             return false;
         }
-        // save score with initial in input
+        // save score with initials in input
         saveScore();
         // remove content from the page after score submission
         var finalScoreEl = document.querySelector("#final-score-wrapper");
@@ -230,6 +239,7 @@ var quiz = function(event) {
         headerEl.remove();
         // show high scores
         highScore();
+        removeCorrectWrong();
     }
     // clear highScores and reload page
     else if (targetEl.matches("#go-back-btn")) {
@@ -237,15 +247,35 @@ var quiz = function(event) {
     }
     // clear high scores from highScores pages
     else if (targetEl.matches("#clear-high-scores-btn")) {
-    
+        var clearHighScore = confirm("Are you sure you'd like to clear all high scores?")
+        if (clearHighScore) {
+            highScores = [];
+            localStorage.setItem("highScores", JSON.stringify(highScores));
+            location.reload();
+        }
     }
+    // Need to make it so the view high scores button works while taking the quiz and on submit page
     else if (targetEl.matches("#high-scores")) {
         var headerEl = document.querySelector('#header-div')
         quizChallenge.remove();
         headerEl.remove();
+        // removeQuestionAnswer(); //Doesnt work atm
         highScore();
+        // removeCorrectWrong(); //Doesnt work atm
     }
 };  
 
+var loadScore = function() {
+    highScores = localStorage.getItem("highScores");
+    if (highScores === null) {
+        highScores = [];
+        return false;
+    }
+
+    highScores = JSON.parse(highScores);
+};
+
 pageContentEl.addEventListener("click", quiz);
 headerContentEl.addEventListener("click", quiz);
+
+loadScore();

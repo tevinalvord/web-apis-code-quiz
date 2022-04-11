@@ -197,7 +197,6 @@ main {
 .high-scores-ol {
     background: #d9d3e9;
     margin: 16px auto;
-    height: 30px;
     min-width: 400px;
     list-style: none;
 }
